@@ -28,14 +28,15 @@
 .inner {
   position: relative;
   z-index: 1;
-  max-width: 1100px;
+  max-width: 1300px;
   margin: 0 auto;
 }
 
 /* ---- Left column (text) ---- */
 .leftContent {
-  width: 65%;
-  max-width: 700px;
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 /* ---- 01 / ABOUT label ---- */
@@ -66,6 +67,28 @@
   transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+.danceWord {
+  display: inline-block;
+  margin-right: 0.3em;
+  font-weight: 500;
+  animation: wordDance 3s ease-in-out infinite;
+}
+
+.danceIcon {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.15em;
+  margin-right: 0.25em;
+  border-radius: 3px;
+}
+
+@keyframes wordDance {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-3px); }
+  75% { transform: translateY(2px); }
+}
+
 /* ---- Beige accent line ---- */
 .accentLine {
   width: 0;
@@ -76,14 +99,14 @@
 
 /* ---- Body text ---- */
 .bio {
-  max-width: 580px;
+  max-width: 100%;
 }
 
 .bioPara {
   font-family: var(--font-sans);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.75;
   color: #444;
   margin: 0;
 }
@@ -93,32 +116,58 @@
   margin-top: 1.5rem;
 }
 
-/* ---- Metadata pills ---- */
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 2.5rem;
+/* ---- How I work block ---- */
+.howBlock {
+  margin-top: 3rem;
+  max-width: 500px;
 }
 
-.chip {
+.howLabel {
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 400;
   color: #999;
-  letter-spacing: 0.02em;
-  border: 1px solid #333;
-  border-radius: 20px;
-  padding: 8px 20px;
-  display: inline-block;
-  transition:
-    border-color 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-    color 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 1.25rem 0;
 }
 
-.chip:hover {
-  border-color: #D4CBC2;
-  color: #E8E8E8;
+.howLines {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.howLine {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: default;
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.howLine:hover {
+  transform: translateX(8px);
+}
+
+.howArrow {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: #D4CBC2;
+  flex-shrink: 0;
+  transition: color 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.howLine:hover .howArrow {
+  color: #455CE9;
+}
+
+.howText {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #C8C8C8;
+  line-height: 1.4;
 }
 
 /* ============================================
@@ -207,15 +256,6 @@
 
   .headline {
     font-size: clamp(1.3rem, 6vw, 1.8rem);
-  }
-
-  .chips {
-    gap: 8px;
-  }
-
-  .chip {
-    padding: 6px 16px;
-    font-size: 0.78rem;
   }
 
   .bubble {

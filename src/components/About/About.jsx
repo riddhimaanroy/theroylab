@@ -17,15 +17,45 @@ const BIO_2_WORDS =
   'I move fast — curiosity is the engine, execution is the output. I help companies see in their data what they would have completely missed.'.split(
     ' ',
   );
-const CHIPS = ['Mastercard', 'Accenture', 'NLP', '8 Years'];
+const DANCE_WORDS = new Set(['8', 'Mastercard', '4', 'Accenture']);
+
+const WORD_ICONS = {
+  Mastercard: (
+    <svg className={styles.danceIcon} viewBox="0 0 24 24" fill="none">
+      <circle cx="9" cy="12" r="7" fill="#EB001B" opacity="0.9" />
+      <circle cx="15" cy="12" r="7" fill="#F79E1B" opacity="0.9" />
+      <path d="M12 6.5a7 7 0 0 1 0 11 7 7 0 0 1 0-11z" fill="#FF5F00" opacity="0.9" />
+    </svg>
+  ),
+  Accenture: (
+    <svg className={styles.danceIcon} viewBox="0 0 100 100" fill="none">
+      <path d="M15 10 L75 50 L15 90 L30 90 L90 50 L30 10 Z" fill="#A100FF" />
+    </svg>
+  ),
+};
+
+const HOW_I_WORK = [
+  'First insights delivered within 48 hours',
+  'Direct access — Slack, WhatsApp, calls',
+  'One-off analysis or end-to-end projects',
+  'Async updates, no black boxes',
+];
 
 function WordSpan({ words, dataAttr }) {
-  return words.map((word, i) => (
-    <span key={i} className={styles.spotWord} {...{ [dataAttr]: '' }}>
-      {word}
-      {i < words.length - 1 ? '\u00A0' : ''}
-    </span>
-  ));
+  return words.map((word, i) => {
+    const isDance = DANCE_WORDS.has(word);
+    const icon = WORD_ICONS[word];
+    return (
+      <span
+        key={i}
+        className={`${styles.spotWord} ${isDance ? styles.danceWord : ''}`}
+        style={isDance ? { animationDelay: `${i * 0.15}s` } : undefined}
+        {...{ [dataAttr]: '' }}
+      >
+        {icon}{word}{i < words.length - 1 ? ' ' : ''}
+      </span>
+    );
+  });
 }
 
 export default function About() {
@@ -35,7 +65,8 @@ export default function About() {
   const lineRef = useRef(null);
   const bio1Ref = useRef(null);
   const bio2Ref = useRef(null);
-  const chipsRef = useRef(null);
+  const howLabelRef = useRef(null);
+  const howLinesRef = useRef(null);
   const bubbleRef = useRef(null);
   const [bubbleGlow, setBubbleGlow] = useState(0);
 
@@ -121,19 +152,33 @@ export default function About() {
         });
       }
 
-      // Chips stagger in after text reveals
-      const chips = chipsRef.current?.querySelectorAll('[data-chip]');
-      if (chips?.length) {
+      // "How I work" label fade in
+      gsap.fromTo(
+        howLabelRef.current,
+        { y: 15, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: howLabelRef.current, start: 'top 85%' },
+        },
+      );
+
+      // "How I work" lines — staggered slide-in from left
+      const howLines = howLinesRef.current?.querySelectorAll('[data-how-line]');
+      if (howLines?.length) {
         gsap.fromTo(
-          chips,
-          { y: 15, opacity: 0 },
+          howLines,
+          { x: -30, opacity: 0 },
           {
-            y: 0,
+            x: 0,
             opacity: 1,
             duration: 0.6,
-            stagger: 0.1,
-            ease: 'power2.out',
-            scrollTrigger: { trigger: chipsRef.current, start: 'top 88%' },
+            stagger: 0.2,
+            ease: 'power3.out',
+            delay: 0.15,
+            scrollTrigger: { trigger: howLinesRef.current, start: 'top 85%' },
           },
         );
       }
@@ -148,9 +193,9 @@ export default function About() {
       <Constellation sectionRef={sectionRef} bubbleElRef={bubbleRef} onBubbleGlow={handleBubbleGlow} />
 
       {/* Content container — flexbox: text left, bubble right */}
-      <div className={styles.inner} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '60px' }}>
+      <div className={styles.inner} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '100px' }}>
         {/* Left column: all text content */}
-        <div className={styles.leftContent} style={{ flex: 1, maxWidth: '600px' }}>
+        <div className={styles.leftContent} style={{ flex: 1 }}>
           <p ref={labelRef} className={styles.label} style={{ opacity: 0 }}>
             01 / About
           </p>
@@ -161,27 +206,27 @@ export default function About() {
 
           <div ref={lineRef} className={styles.accentLine} />
 
-          <div className={styles.bio} style={{ maxWidth: '550px', overflow: 'hidden' }}>
-            <p ref={bio1Ref} className={styles.bioPara} style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+          <div className={styles.bio}>
+            <p ref={bio1Ref} className={styles.bioPara}>
               <WordSpan words={BIO_1_WORDS} dataAttr="data-bw" />
             </p>
-            <p ref={bio2Ref} className={styles.bioPara2} style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+            <p ref={bio2Ref} className={styles.bioPara2}>
               <WordSpan words={BIO_2_WORDS} dataAttr="data-bw" />
             </p>
           </div>
 
-          <div ref={chipsRef} className={styles.chips}>
-            {CHIPS.map((chip) => (
-              <span
-                key={chip}
-                data-chip
-                data-cursor-hover
-                className={styles.chip}
-                style={{ opacity: 0 }}
-              >
-                {chip}
-              </span>
-            ))}
+          <div className={styles.howBlock}>
+            <p ref={howLabelRef} className={styles.howLabel} style={{ opacity: 0 }}>
+              How I work
+            </p>
+            <div ref={howLinesRef} className={styles.howLines}>
+              {HOW_I_WORK.map((line) => (
+                <div key={line} data-how-line className={styles.howLine} style={{ opacity: 0 }}>
+                  <span className={styles.howArrow}>↳</span>
+                  <span className={styles.howText}>{line}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

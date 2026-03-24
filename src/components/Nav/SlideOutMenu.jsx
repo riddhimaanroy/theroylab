@@ -110,7 +110,7 @@ export default function SlideOutMenu({ isOpen, onClose }) {
             ))}
           </nav>
 
-          <span className={styles.menuLabel} style={{ marginTop: '4rem' }}>Socials</span>
+          <span className={styles.menuLabel} style={{ display: 'block', marginTop: '2rem' }}>Socials</span>
           <div className={styles.menuDivider} />
 
           <div className={styles.socials}>

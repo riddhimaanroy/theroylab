@@ -182,15 +182,32 @@ export default function Hero({ started }) {
         </p>
       </div>
 
-      {/* ---- Location badge (bottom-left, pill) ---- */}
+      {/* ---- Location badge — flush left edge, rounded right ---- */}
       <div ref={badgeRef} className={styles.badge} style={{ opacity: 0 }}>
-        <span className={styles.badgeGlobe}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-          </svg>
-        </span>
-        <span className={styles.badgeText}>Located in India</span>
+        <div className={styles.badgeTextZone}>
+          <span className={styles.badgeLine}>Located</span>
+          <span className={styles.badgeLine}>in India</span>
+        </div>
+        <div className={styles.badgeGlobeZone}>
+          <div className={styles.badgeGlobeInner}>
+            <svg
+              className={styles.badgeGlobeSvg}
+              width="30"
+              height="30"
+              viewBox="0 0 40 40"
+              fill="none"
+              stroke="#D4CBC2"
+              strokeWidth="1.1"
+            >
+              <circle cx="20" cy="20" r="18" />
+              <ellipse cx="20" cy="20" rx="7" ry="18" />
+              <ellipse cx="20" cy="20" rx="13" ry="18" />
+              <line x1="2" y1="12" x2="38" y2="12" />
+              <line x1="2" y1="20" x2="38" y2="20" />
+              <line x1="2" y1="28" x2="38" y2="28" />
+            </svg>
+          </div>
+        </div>
       </div>
 
       {/* ---- Name at bottom — single instance, drifts right on scroll ---- */}

@@ -18,6 +18,7 @@ const MAX_PULL = 8;
 export default function Nav({ visible, menuOpen, onMenuToggle }) {
   const logoRef = useRef(null);
   const btnRef = useRef(null);
+  const linksRef = useRef(null);
   const btnPos = useRef({ x: 0, y: 0 });
   const btnTarget = useRef({ x: 0, y: 0 });
   const rafId = useRef(null);
@@ -36,6 +37,39 @@ export default function Nav({ visible, menuOpen, onMenuToggle }) {
       scrub: true,
       onUpdate: (self) => {
         logo.style.opacity = String(1 - self.progress);
+      },
+    });
+
+    return () => st.kill();
+  }, []);
+
+  // Crossfade: text links fade out, hamburger fades in as hero scrolls away
+  useEffect(() => {
+    const btn = btnRef.current;
+    const links = linksRef.current;
+    if (!btn || !links) return;
+
+    // Start: links visible, hamburger hidden
+    btn.style.opacity = '0';
+    btn.style.pointerEvents = 'none';
+
+    const heroEl = document.querySelector('[data-section="hero"]');
+    if (!heroEl) return;
+
+    // Trigger when hero bottom reaches ~30% from top (section 2 almost at top)
+    const st = ScrollTrigger.create({
+      trigger: heroEl,
+      start: 'bottom 40%',
+      end: 'bottom 10%',
+      scrub: true,
+      onUpdate: (self) => {
+        const p = self.progress;
+        // Links fade out
+        links.style.opacity = String(1 - p);
+        links.style.pointerEvents = p > 0.5 ? 'none' : 'auto';
+        // Hamburger fades in
+        btn.style.opacity = String(p);
+        btn.style.pointerEvents = p > 0.5 ? 'auto' : 'none';
       },
     });
 
@@ -86,11 +120,13 @@ export default function Nav({ visible, menuOpen, onMenuToggle }) {
         Riddhimaan Roy
       </a>
       <nav className={styles.nav}>
-        {LINKS.map((link) => (
-          <a key={link.label} href={link.href} className={styles.link} data-cursor-hover>
-            <span className={styles.linkText}>{link.label}</span>
-          </a>
-        ))}
+        <div ref={linksRef} className={styles.linkGroup}>
+          {LINKS.map((link) => (
+            <a key={link.label} href={link.href} className={styles.link} data-cursor-hover>
+              <span className={styles.linkText}>{link.label}</span>
+            </a>
+          ))}
+        </div>
 
         {/* Hamburger / close button */}
         <button
