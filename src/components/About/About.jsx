@@ -8,13 +8,13 @@ import styles from './About.module.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const HEADLINE_WORDS =
-  'I hunt for the signal everyone else missed.'.split(' ');
+  'Your data is telling you something. You\'re just not hearing it yet.'.split(' ');
 const BIO_1_WORDS =
-  '8 years deep in data science. Currently helping Mastercard rethink their approach to NLP. Before that, nearly 4 years at Accenture building the models that actually shipped.'.split(
+  '8 years of building models that actually move numbers — from NLP systems at Mastercard to production pipelines at Accenture. I\'ve helped companies see what was sitting in their data all along. Now I do the same for teams that need senior-level data science without the full-time overhead.'.split(
     ' ',
   );
 const BIO_2_WORDS =
-  'I move fast — curiosity is the engine, execution is the output. I help companies see in their data what they would have completely missed.'.split(
+  'I don\'t start with models — I start with your problem. What decision are you trying to make? What\'s costing you money? That\'s where the work begins.'.split(
     ' ',
   );
 const DANCE_WORDS = new Set(['8', 'Mastercard', '4', 'Accenture']);
@@ -95,16 +95,14 @@ export default function About() {
       if (hw?.length) {
         const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: section,
-            start: 'top 80%',
+            trigger: headlineRef.current,
+            start: 'top 95%',
             end: 'top 40%',
             scrub: 1,
-            onEnter: () => console.log('[About] headline ScrollTrigger entered'),
-            onUpdate: (self) => console.log('[About] headline progress:', self.progress.toFixed(2)),
           },
         });
         hw.forEach((el, i) => {
-          tl.to(el, { color: '#E8E8E8', duration: 0.3 }, i * 0.1);
+          tl.to(el, { color: '#E8E8E8', duration: 0.3 }, i * 0.08);
         });
       }
 
@@ -126,13 +124,13 @@ export default function About() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: bio1Ref.current,
-            start: 'top 90%',
-            end: 'top 50%',
+            start: 'top 98%',
+            end: 'top 30%',
             scrub: 1,
           },
         });
         bw1.forEach((el, i) => {
-          tl.to(el, { color: '#C8C8C8', duration: 0.15 }, i * 0.05);
+          tl.to(el, { color: '#C8C8C8', duration: 0.15 }, i * 0.03);
         });
       }
 
@@ -142,13 +140,13 @@ export default function About() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: bio2Ref.current,
-            start: 'top 90%',
-            end: 'top 50%',
+            start: 'top 98%',
+            end: 'top 30%',
             scrub: 1,
           },
         });
         bw2.forEach((el, i) => {
-          tl.to(el, { color: '#C8C8C8', duration: 0.15 }, i * 0.05);
+          tl.to(el, { color: '#C8C8C8', duration: 0.15 }, i * 0.03);
         });
       }
 
@@ -186,7 +184,7 @@ export default function About() {
           // Number count-up: animate from 00 to target
           const numEl = card.querySelector('[data-how-num]');
           if (numEl) {
-            const target = parseInt(numEl.textContent, 10);
+            const target = parseInt(numEl.getAttribute('data-target'), 10);
             const obj = { val: 0 };
             gsap.to(obj, {
               val: target,
@@ -269,7 +267,7 @@ export default function About() {
               <div key={item.num} data-how-line className={styles.howCard} style={{ opacity: 0 }}>
                 <div data-how-border className={styles.howCardBorder} />
                 <div className={styles.howCardGlow} />
-                <span data-how-num className={styles.howNum}>{item.num}</span>
+                <span data-how-num data-target={item.num} className={styles.howNum}>00</span>
                 <div className={styles.howCardContent}>
                   <div className={styles.howTitleRow}>
                     <span className={styles.howPulse} />
