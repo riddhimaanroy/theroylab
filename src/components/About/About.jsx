@@ -35,10 +35,10 @@ const WORD_ICONS = {
 };
 
 const HOW_I_WORK = [
-  'First insights delivered within 48 hours',
-  'Direct access — Slack, WhatsApp, calls',
-  'One-off analysis or end-to-end projects',
-  'Async updates, no black boxes',
+  { num: '01', title: '48h first signal', desc: 'First insights delivered within 48 hours — no waiting for kickoff meetings.' },
+  { num: '02', title: 'Direct line', desc: 'Slack, WhatsApp, calls. No middlemen, no ticket queues.' },
+  { num: '03', title: 'Flex scope', desc: 'One-off analysis or end-to-end pipeline builds. You pick the depth.' },
+  { num: '04', title: 'No black boxes', desc: 'Async updates with full visibility. You always know what\'s happening.' },
 ];
 
 function WordSpan({ words, dataAttr }) {
@@ -165,22 +165,57 @@ export default function About() {
         },
       );
 
-      // "How I work" lines — staggered slide-in from left
-      const howLines = howLinesRef.current?.querySelectorAll('[data-how-line]');
-      if (howLines?.length) {
-        gsap.fromTo(
-          howLines,
-          { x: -30, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.2,
-            ease: 'power3.out',
-            delay: 0.15,
-            scrollTrigger: { trigger: howLinesRef.current, start: 'top 85%' },
-          },
-        );
+      // "How I work" cards — clip-path reveal + number count-up
+      const howCards = howLinesRef.current?.querySelectorAll('[data-how-line]');
+      if (howCards?.length) {
+        // Cards reveal with clip-path wipe from left
+        howCards.forEach((card, i) => {
+          gsap.fromTo(
+            card,
+            { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+            {
+              clipPath: 'inset(0 0% 0 0)',
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power3.inOut',
+              delay: 0.2 + i * 0.12,
+              scrollTrigger: { trigger: howLinesRef.current, start: 'top 85%' },
+            },
+          );
+
+          // Number count-up: animate from 00 to target
+          const numEl = card.querySelector('[data-how-num]');
+          if (numEl) {
+            const target = parseInt(numEl.textContent, 10);
+            const obj = { val: 0 };
+            gsap.to(obj, {
+              val: target,
+              duration: 1.2,
+              delay: 0.4 + i * 0.12,
+              ease: 'power2.out',
+              scrollTrigger: { trigger: howLinesRef.current, start: 'top 85%' },
+              onUpdate: () => {
+                numEl.textContent = String(Math.round(obj.val)).padStart(2, '0');
+              },
+            });
+          }
+
+          // Top border color sweep
+          const border = card.querySelector('[data-how-border]');
+          if (border) {
+            gsap.fromTo(
+              border,
+              { scaleX: 0, transformOrigin: 'left' },
+              {
+                scaleX: 1,
+                duration: 0.6,
+                ease: 'power3.out',
+                delay: 0.5 + i * 0.12,
+                scrollTrigger: { trigger: howLinesRef.current, start: 'top 85%' },
+              },
+            );
+          }
+        });
       }
     }, section);
 
@@ -215,24 +250,36 @@ export default function About() {
             </p>
           </div>
 
-          <div className={styles.howBlock}>
-            <p ref={howLabelRef} className={styles.howLabel} style={{ opacity: 0 }}>
-              How I work
-            </p>
-            <div ref={howLinesRef} className={styles.howLines}>
-              {HOW_I_WORK.map((line) => (
-                <div key={line} data-how-line className={styles.howLine} style={{ opacity: 0 }}>
-                  <span className={styles.howArrow}>↳</span>
-                  <span className={styles.howText}>{line}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Right side: LinkedIn magnetic bubble */}
         <div style={{ flexShrink: 0, width: '150px', marginTop: '60px', marginRight: '40px' }}>
           <MagneticBubble ref={bubbleRef} glowStrength={bubbleGlow} />
+        </div>
+      </div>
+
+      {/* How I work — full width below the flex layout */}
+      <div className={styles.howBlock} style={{ position: 'relative', zIndex: 1 }}>
+        <div className={styles.howBlockInner}>
+          <p ref={howLabelRef} className={styles.howLabel} style={{ opacity: 0 }}>
+            How I work
+          </p>
+          <div ref={howLinesRef} className={styles.howGrid}>
+            {HOW_I_WORK.map((item) => (
+              <div key={item.num} data-how-line className={styles.howCard} style={{ opacity: 0 }}>
+                <div data-how-border className={styles.howCardBorder} />
+                <div className={styles.howCardGlow} />
+                <span data-how-num className={styles.howNum}>{item.num}</span>
+                <div className={styles.howCardContent}>
+                  <div className={styles.howTitleRow}>
+                    <span className={styles.howPulse} />
+                    <span className={styles.howTitle}>{item.title}</span>
+                  </div>
+                  <span className={styles.howDesc}>{item.desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
