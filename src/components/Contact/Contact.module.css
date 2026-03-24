@@ -1,0 +1,252 @@
+/* ============================================
+   CONTACT / FOOTER — Final section.
+   Dark bg, sits directly below the curved SVG
+   divider rendered by the Projects section.
+   ============================================ */
+
+.contact {
+  position: relative;
+  background: #1C1D20;
+  padding: 12vh 4vw 4vh 4vw;
+  overflow: hidden;
+}
+
+.inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ---- Top row: photo + headline + bubble ---- */
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.topLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.photo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-top: 0.6rem;
+}
+
+.headline {
+  font-family: var(--font-sans);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #444;
+  max-width: 550px;
+}
+
+.headlineWord {
+  display: inline;
+  transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.topRight {
+  flex-shrink: 0;
+}
+
+/* ---- Magnetic "Get in touch" bubble ---- */
+.bubbleWrap {
+  position: relative;
+}
+
+.bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: var(--accent);
+  text-decoration: none;
+  will-change: transform;
+  box-shadow: 0 15px 50px rgba(69, 92, 233, 0.3);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.bubble:hover {
+  transform: scale(1.05);
+}
+
+.bubbleText {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: #F1F1F1;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+  text-align: center;
+}
+
+/* ---- Divider ---- */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: #333;
+  margin: 3rem 0 2rem 0;
+}
+
+/* ---- Contact pills ---- */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.pill {
+  display: inline-block;
+  border: 1px solid #444;
+  border-radius: 30px;
+  padding: 16px 32px;
+  color: #E8E8E8;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 400;
+  text-decoration: none;
+  background: transparent;
+  transition:
+    background 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    border-color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.pill:hover {
+  background: #2a2a2d;
+  border-color: #555;
+}
+
+/* ---- Footer bar ---- */
+.footerLine {
+  width: 100%;
+  height: 1px;
+  background: #333;
+  margin-top: 6rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem 0;
+}
+
+.footerCol {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footerLabel {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.footerValue {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #888;
+}
+
+.footerSocials {
+  display: flex;
+  gap: 2rem;
+}
+
+.footerSocialLink {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #888;
+  text-decoration: none;
+  transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.footerSocialLink:hover {
+  color: #E8E8E8;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .topRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .topRight {
+    flex-direction: row;
+    align-self: flex-end;
+    gap: 1.5rem;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .topLeft {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .headline {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+  }
+
+  .pills {
+    flex-direction: column;
+  }
+
+  .pill {
+    text-align: center;
+    padding: 14px 24px;
+    font-size: 0.85rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .bubble {
+    width: 120px;
+    height: 120px;
+  }
+
+  .bubbleText {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact {
+    padding: 10vh 4vw 3vh 4vw;
+  }
+
+  .headline {
+    font-size: clamp(1.8rem, 9vw, 2.5rem);
+  }
+
+  .photo {
+    width: 48px;
+    height: 48px;
+  }
+}

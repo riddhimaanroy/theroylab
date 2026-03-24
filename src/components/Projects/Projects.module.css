@@ -1,0 +1,224 @@
+/* ============================================
+   SECTION 3 — PROJECTS / RECENT WORK
+   W2-style list with hover image preview.
+   Light beige background (#E8E4DE).
+   ============================================ */
+
+.projects {
+  position: relative;
+  background: #E8E4DE;
+  padding: 10vh 4vw 15vh 4vw;
+}
+
+.inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ---- Section label ---- */
+.label {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #888;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+/* ---- Horizontal rules ---- */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: #CCC;
+}
+
+/* ---- Project list ---- */
+.list {
+  position: relative;
+}
+
+/* ---- Project row ---- */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3rem 0;
+  cursor: pointer;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+/* When ANY row is hovered, all rows dim — then the active one overrides */
+.list:hover .row {
+  opacity: 0.4;
+}
+
+.list:hover .row:hover {
+  opacity: 1;
+}
+
+/* ---- Title (left) ---- */
+.title {
+  font-family: var(--font-sans);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #1C1D20;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.row:hover .title {
+  transform: translateX(5px);
+}
+
+/* ---- Category (right) ---- */
+.category {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  color: #888;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 2rem;
+}
+
+/* ============================================
+   Hover image preview — fixed, follows cursor
+   ============================================ */
+.preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 280px;
+  border-radius: 8px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  will-change: transform;
+  transition: opacity 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.previewVisible {
+  opacity: 1;
+}
+
+.previewImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ============================================
+   "More work" magnetic button
+   ============================================ */
+.moreWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+}
+
+.moreButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 200px;
+  height: 60px;
+  border: 1px solid #999;
+  border-radius: 30px;
+  background: transparent;
+  color: #1C1D20;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  will-change: transform;
+  transition:
+    background 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    color 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    border-color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.moreButton:hover {
+  background: #1C1D20;
+  color: #E8E4DE;
+  border-color: #1C1D20;
+}
+
+.moreSup {
+  font-size: 0.7rem;
+  vertical-align: super;
+  line-height: 1;
+  margin-left: 2px;
+}
+
+/* ---- Curved divider into contact ---- */
+.curveDivider {
+  display: block;
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  z-index: 1;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 2rem 0;
+  }
+
+  .title {
+    font-size: clamp(1.8rem, 7vw, 2.8rem);
+  }
+
+  .category {
+    margin-left: 0;
+    font-size: 0.9rem;
+  }
+
+  .preview {
+    display: none;
+  }
+
+  .moreButton {
+    width: 170px;
+    height: 50px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .projects {
+    padding: 8vh 4vw 12vh 4vw;
+  }
+
+  .title {
+    font-size: clamp(1.5rem, 8vw, 2.2rem);
+  }
+
+  .row {
+    padding: 1.5rem 0;
+  }
+}

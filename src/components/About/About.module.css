@@ -1,0 +1,234 @@
+/* ============================================
+   ABOUT SECTION — Rebuilt from scratch.
+   65/30 split layout. No overflow. No overlap.
+   ============================================ */
+
+.about {
+  position: relative;
+  background: #1C1D20;
+  padding: 20vh 4vw 15vh 4vw;
+  overflow: hidden;
+}
+
+/* ---- Canvas constellation (behind everything) ---- */
+.constellationField {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: auto;
+}
+
+.constellationCanvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ---- Content wrapper ---- */
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ---- Left column (text) ---- */
+.leftContent {
+  width: 65%;
+  max-width: 700px;
+}
+
+/* ---- 01 / ABOUT label ---- */
+.label {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #999;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ---- Headline ---- */
+.headline {
+  font-family: var(--font-sans);
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #555;
+  max-width: 700px;
+  margin-top: 2rem;
+}
+
+.spotWord {
+  display: inline;
+  transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ---- Beige accent line ---- */
+.accentLine {
+  width: 0;
+  height: 1px;
+  background: #D4CBC2;
+  margin: 2rem 0;
+}
+
+/* ---- Body text ---- */
+.bio {
+  max-width: 580px;
+}
+
+.bioPara {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: #444;
+  margin: 0;
+}
+
+.bioPara2 {
+  composes: bioPara;
+  margin-top: 1.5rem;
+}
+
+/* ---- Metadata pills ---- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 2.5rem;
+}
+
+.chip {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #999;
+  letter-spacing: 0.02em;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 8px 20px;
+  display: inline-block;
+  transition:
+    border-color 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+    color 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.chip:hover {
+  border-color: #D4CBC2;
+  color: #E8E8E8;
+}
+
+/* ============================================
+   LinkedIn bubble — absolutely positioned right
+   relative to .inner, vertically centered
+   ============================================ */
+.bubbleWrap {
+  position: relative;
+  z-index: 2;
+}
+
+.bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #D4CBC2;
+  text-decoration: none;
+  will-change: transform;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.bubble:hover {
+  transform: scale(1.05);
+}
+
+.bubbleInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  will-change: transform;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bubbleIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.bubbleLabel {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: #1C1D20;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 900px) {
+  .leftContent {
+    width: 100%;
+    max-width: none;
+  }
+
+  .bubbleWrap {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin-top: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .headline {
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+  }
+
+  .bioPara,
+  .bioPara2 {
+    font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .about {
+    padding: 15vh 4vw 10vh 4vw;
+  }
+
+  .headline {
+    font-size: clamp(1.3rem, 6vw, 1.8rem);
+  }
+
+  .chips {
+    gap: 8px;
+  }
+
+  .chip {
+    padding: 6px 16px;
+    font-size: 0.78rem;
+  }
+
+  .bubble {
+    width: 110px;
+    height: 110px;
+  }
+
+  .bubbleIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .bubbleLabel {
+    font-size: 0.75rem;
+  }
+}

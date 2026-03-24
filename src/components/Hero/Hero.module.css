@@ -1,0 +1,212 @@
+/* ============================================
+   HERO V2 — W2 (dennissnellenberg.com) style
+   Warm muted background, photo center, single name at bottom.
+   Natural scroll with layered parallax — no pinning.
+   ============================================ */
+
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 700px;
+  background: var(--bg-hero);
+  overflow: hidden;
+}
+
+/* ---- Photo ---- */
+/* Flex wrapper handles centering so GSAP can own transform
+   on .photoWrap without fighting a CSS translate. */
+.photoAnchor {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10vh; /* nudge photo above dead-center */
+  pointer-events: none;
+  z-index: 3;
+}
+
+.photoWrap {
+  will-change: transform;
+  pointer-events: auto;
+}
+
+.photoMask {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: radial-gradient(
+    ellipse 85% 90% at 50% 45%,
+    #000 55%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 85% 90% at 50% 45%,
+    #000 55%,
+    transparent 100%
+  );
+}
+
+.photo {
+  width: clamp(300px, 30vw, 500px);
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center 15%;
+  display: block;
+}
+
+/* ---- Title block: arrow + text as one cohesive unit ---- */
+.titleBlock {
+  position: absolute;
+  top: 52%;
+  left: calc(50% + clamp(170px, 16vw, 280px));
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  will-change: transform, opacity;
+}
+
+.titleArrow {
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--text-dark);
+  opacity: 0.5;
+  display: block;
+}
+
+.titleText {
+  font-family: var(--font-sans);
+  font-size: clamp(1.1rem, 1.45vw, 1.35rem);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text-dark);
+  letter-spacing: 0.005em;
+}
+
+/* ---- Location badge — dark pill, bottom-left, above the name row ---- */
+.badge {
+  position: absolute;
+  bottom: clamp(135px, 17vh, 200px);
+  left: 40px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--text-dark);
+  color: #D4CBC2;
+  padding: 0.55rem 1.05rem;
+  border-radius: 100px;
+  will-change: transform, opacity;
+}
+
+.badgeGlobe {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  opacity: 0.7;
+}
+
+.badgeText {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: inherit;
+  opacity: 0.85;
+}
+
+/* ---- Name at bottom — single instance ---- */
+.nameRow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  overflow: visible;
+  padding-bottom: clamp(0.3rem, 1.5vh, 1.5rem);
+  pointer-events: none;
+}
+
+.nameTrack {
+  font-family: var(--font-sans);
+  font-size: clamp(4rem, 9.5vw, 11rem);
+  font-weight: 300;
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  color: var(--text-dark);
+  white-space: nowrap;
+  will-change: transform, opacity;
+  user-select: none;
+  text-shadow: 0 0 60px rgba(0, 0, 0, 0.08), 0 0 20px rgba(0, 0, 0, 0.04);
+  /* Center the single name with slight left padding */
+  padding-left: clamp(1rem, 3vw, 2.5rem);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .titleBlock {
+    left: auto;
+    right: clamp(1.5rem, 4vw, 3rem);
+    top: auto;
+    bottom: clamp(8rem, 22vh, 14rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .photo {
+    width: clamp(220px, 50vw, 340px);
+  }
+
+  .photoAnchor {
+    padding-bottom: 12vh;
+  }
+
+  .nameTrack {
+    font-size: clamp(3.5rem, 12vw, 6rem);
+    padding-left: 1rem;
+  }
+
+  .titleBlock {
+    right: 1.5rem;
+    bottom: clamp(6rem, 18vh, 10rem);
+  }
+
+  .titleText {
+    font-size: 0.8rem;
+  }
+
+  .badge {
+    bottom: clamp(80px, 12vh, 120px);
+    left: 24px;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .badgeText {
+    font-size: 0.8rem;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .nameTrack {
+    font-size: clamp(2.8rem, 14vw, 4.5rem);
+    padding-left: 0.75rem;
+  }
+
+  .photo {
+    width: 55vw;
+  }
+
+  .titleBlock {
+    right: 1rem;
+    bottom: clamp(5rem, 16vh, 8rem);
+  }
+
+  .badge {
+    bottom: clamp(70px, 10vh, 100px);
+    left: 16px;
+  }
+
+}

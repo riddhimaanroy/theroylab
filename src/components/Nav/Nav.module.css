@@ -1,0 +1,129 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem clamp(1.5rem, 4vw, 3rem);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition:
+    opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  mix-blend-mode: difference;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.logo {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #f1f1f1;
+  transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.logo:hover {
+  opacity: 0.6;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.link {
+  position: relative;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #f1f1f1;
+  padding-bottom: 2px;
+}
+
+.linkText {
+  position: relative;
+  display: inline-block;
+}
+
+/* Underline animation — grows from left to right on hover */
+.link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #f1f1f1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+}
+
+/* ---- Hamburger button ---- */
+.hamburger {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: #1C1D20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  will-change: transform;
+  transition: background-color 0.3s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.hamburgerLine {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #f1f1f1;
+  border-radius: 1px;
+  transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+  transform-origin: center;
+}
+
+/* Open state — X shape, accent blue bg, white lines */
+.hamburgerOpen {
+  background: var(--accent);
+}
+
+.hamburgerOpen .hamburgerLine {
+  background: #f1f1f1;
+}
+
+.hamburgerOpen .hamburgerLine:first-child {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.hamburgerOpen .hamburgerLine:last-child {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+@media (max-width: 600px) {
+  .nav { gap: 1rem; }
+  .logo { font-size: 0.8rem; }
+  .link { font-size: 0.8rem; }
+
+  .hamburger {
+    width: 44px;
+    height: 44px;
+  }
+}

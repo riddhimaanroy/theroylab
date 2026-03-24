@@ -1,0 +1,153 @@
+/* ============================================
+   SLIDE-OUT MENU — W2-style elastic reveal
+   Covers right 50% with curved clip-path entry.
+   ============================================ */
+
+/* ---- Dimmed overlay (left half) ---- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  transition: background 0.3s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.overlayOpen {
+  background: rgba(0, 0, 0, 0.4);
+  pointer-events: auto;
+}
+
+/* ---- Menu panel ---- */
+.menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50vw;
+  height: 100vh;
+  z-index: 999;
+  background: #1C1D20;
+  clip-path: circle(0% at calc(100% - 50px) 50px);
+  transition: clip-path 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+  overflow-y: auto;
+}
+
+.menuOpen {
+  clip-path: circle(150% at calc(100% - 50px) 50px);
+}
+
+/* ---- Inner content ---- */
+.menuInner {
+  padding: 8rem 4rem 4rem 4rem;
+}
+
+.menuLabel {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.menuDivider {
+  width: 100%;
+  height: 1px;
+  background: #333;
+  margin: 1rem 0 2rem 0;
+}
+
+/* ---- Menu items ---- */
+.menuNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  text-decoration: none;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.menuItem:hover {
+  transform: translateX(10px);
+}
+
+.menuBullet {
+  font-size: 1.5rem;
+  color: #D4CBC2;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.menuItem:hover .menuBullet {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.menuItemText {
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  color: #E8E8E8;
+  transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.menuItem:hover .menuItemText {
+  color: #D4CBC2;
+}
+
+/* Dim non-hovered items */
+.menuNav:hover .menuItem:not(:hover) .menuItemText {
+  color: #666;
+}
+
+.menuNav:hover .menuItem:not(:hover) .menuBullet {
+  opacity: 0;
+}
+
+/* ---- Socials ---- */
+.socials {
+  display: flex;
+  gap: 2rem;
+}
+
+.socialLink {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #999;
+  text-decoration: none;
+  transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.socialLink:hover {
+  color: #E8E8E8;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .menu {
+    width: 100vw;
+  }
+
+  .menuInner {
+    padding: 6rem 2rem 3rem 2rem;
+  }
+
+  .menuItemText {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+
+  .socials {
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+}

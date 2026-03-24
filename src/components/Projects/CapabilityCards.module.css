@@ -1,0 +1,500 @@
+/* ============================================
+   CAPABILITY CARDS — parallax scroll rows
+   with individual CSS animations per card.
+   ============================================ */
+
+.capabilities {
+  margin-top: 8rem;
+  overflow: visible;
+}
+
+.capLabel {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #888;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.capSubheadline {
+  font-family: var(--font-sans);
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  font-weight: 400;
+  color: #555;
+  max-width: 500px;
+  line-height: 1.5;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+/* ---- Row layout ---- */
+.rowsWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: visible;
+}
+
+.cardRow {
+  display: flex;
+  gap: 20px;
+  will-change: transform;
+}
+
+/* ---- Card ---- */
+.card {
+  flex-shrink: 0;
+  width: 300px;
+  height: 220px;
+  border-radius: 12px;
+  background: #2A2A2D;
+  border: 1px solid rgba(180, 170, 160, 0.5) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  overflow: hidden !important;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.card:hover {
+  border-color: rgba(180, 170, 160, 0.9);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+.cardLabel {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #F1F1F1;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  z-index: 1;
+}
+
+.cardAnim {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px 20px;
+}
+
+/* ============================================
+   CARD 1 — AI AGENTS (flow nodes)
+   ============================================ */
+.agentsFlow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.agentsNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.agentsDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #F1F1F1;
+}
+
+.agentsLine {
+  width: 2px;
+  height: 36px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #555 0px,
+    #555 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  animation: agentsPulse 2s ease-in-out infinite;
+}
+
+@keyframes agentsPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* ============================================
+   CARD 2 — NLP PIPELINES (processing log)
+   ============================================ */
+.nlpLog {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.nlpLine {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #666;
+  white-space: nowrap;
+  opacity: 0;
+  animation: nlpFade 3.5s ease-in-out infinite;
+}
+
+@keyframes nlpFade {
+  0% { opacity: 0; transform: translateX(20px); }
+  15% { opacity: 1; transform: translateX(0); }
+  70% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(-40px); }
+}
+
+/* ============================================
+   CARD 3 — PREDICTIVE MODELS (SVG chart)
+   ============================================ */
+.chartSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.chartGrid {
+  stroke: #333;
+  stroke-width: 0.5;
+}
+
+.chartLine {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: chartDraw 4s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+@keyframes chartDraw {
+  0% { stroke-dashoffset: 400; }
+  50% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -400; }
+}
+
+/* ============================================
+   CARD 4 — COMPUTER VISION (pixel grid)
+   ============================================ */
+.visionGrid {
+  display: grid;
+  grid-template-columns: repeat(8, 12px);
+  grid-template-rows: repeat(6, 12px);
+  gap: 4px;
+}
+
+.visionPixel {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: #333;
+  animation: pixelPulse 4s ease-in-out infinite;
+}
+
+@keyframes pixelPulse {
+  0%, 85%, 100% { background: #333; }
+  15%, 25% { background: #E8E4DE; }
+}
+
+/* ============================================
+   CARD 5 — REAL-TIME APIs (counter)
+   ============================================ */
+.realtimeWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.realtimeCounter {
+  font-family: 'Courier New', monospace;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #F1F1F1;
+  min-width: 100px;
+  text-align: center;
+}
+
+.realtimeCounter::after {
+  content: '0';
+  animation: counterTick 4s steps(200) infinite;
+}
+
+@keyframes counterTick {
+  0% { content: '0'; }
+  100% { content: '9999'; }
+}
+
+/* fallback — CSS counters aren't great for this, use CSS animation of width */
+.realtimeLabel {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.realtimeBar {
+  width: 120px;
+  height: 3px;
+  background: #333;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.realtimeBarFill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  animation: barFill 2s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+@keyframes barFill {
+  0% { width: 0%; }
+  50% { width: 100%; }
+  100% { width: 0%; }
+}
+
+/* ============================================
+   CARD 6 — DASHBOARDS (bar charts)
+   ============================================ */
+.dashBars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.dashRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashLabel {
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  color: #666;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.dashTrack {
+  flex: 1;
+  height: 10px;
+  background: #333;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.dashFill {
+  height: 100%;
+  background: #D4CBC2;
+  border-radius: 5px;
+  animation: dashPulse 3.5s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+@keyframes dashPulse {
+  0%, 100% { width: calc(var(--bar-w) * 0.6); }
+  50% { width: var(--bar-w); }
+}
+
+/* ============================================
+   CARD 7 — RECOMMENDATION ENGINE (graph)
+   ============================================ */
+.graphSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.graphDot {
+  fill: #F1F1F1;
+  animation: graphDotPulse 3s ease-in-out infinite;
+}
+
+@keyframes graphDotPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.graphLine {
+  stroke: #555;
+  stroke-width: 1;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: graphLineDraw 4s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+@keyframes graphLineDraw {
+  0% { stroke-dashoffset: 200; opacity: 0; }
+  30% { stroke-dashoffset: 0; opacity: 1; }
+  70% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: -200; opacity: 0; }
+}
+
+/* ============================================
+   CARD 8 — MLOPS (progress ring)
+   ============================================ */
+.mlopsWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mlopsSvg {
+  width: 80px;
+  height: 80px;
+}
+
+.mlopsTrack {
+  fill: none;
+  stroke: #333;
+  stroke-width: 3;
+}
+
+.mlopsRing {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 213.6;
+  stroke-dashoffset: 213.6;
+  transform-origin: center;
+  transform: rotate(-90deg);
+  animation: ringFill 4s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+@keyframes ringFill {
+  0% { stroke-dashoffset: 213.6; }
+  45% { stroke-dashoffset: 0; }
+  55% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 213.6; }
+}
+
+.mlopsPercent {
+  position: absolute;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #F1F1F1;
+}
+
+.mlopsPercent::after {
+  content: '0%';
+  animation: percentCount 4s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+@keyframes percentCount {
+  0% { content: '0%'; }
+  10% { content: '12%'; }
+  20% { content: '28%'; }
+  30% { content: '47%'; }
+  40% { content: '71%'; }
+  45% { content: '100%'; }
+  55% { content: '100%'; }
+  60% { content: '85%'; }
+  70% { content: '52%'; }
+  80% { content: '31%'; }
+  90% { content: '10%'; }
+  100% { content: '0%'; }
+}
+
+/* ============================================
+   CARD 9 — DATA STRATEGY (waterfall bars)
+   ============================================ */
+.strategyBars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.strategyBar {
+  height: 8px;
+  border-radius: 4px;
+  background: #D4CBC2;
+  animation: strategyGrow 3.5s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+.strategyBarAlt {
+  background: var(--accent);
+}
+
+@keyframes strategyGrow {
+  0% { width: 0; }
+  30% { width: var(--bar-w); }
+  70% { width: var(--bar-w); }
+  100% { width: 0; }
+}
+
+/* ============================================
+   CARD 10 — RAPID PROTOTYPING (typing)
+   ============================================ */
+.protoWrap {
+  display: flex;
+  align-items: center;
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  color: #F1F1F1;
+}
+
+.protoText::after {
+  content: '';
+  animation: protoType 5s steps(1) infinite;
+}
+
+@keyframes protoType {
+  0% { content: ''; }
+  6% { content: 'm'; }
+  12% { content: 'mv'; }
+  18% { content: 'mvp'; }
+  24% { content: 'mvp.'; }
+  30% { content: 'mvp.p'; }
+  36% { content: 'mvp.py'; }
+  42%, 58% { content: 'mvp.py'; }
+  60% { content: 'mvp.py ✓'; }
+  80% { content: 'mvp.py ✓'; }
+  85% { content: ''; }
+}
+
+.protoCursor {
+  animation: blink 0.6s step-end infinite;
+  color: #F1F1F1;
+  margin-left: 1px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+  .capabilities {
+    margin-top: 5rem;
+  }
+
+  .cardRow {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 280px;
+    height: 200px;
+  }
+
+  .capLabel {
+    margin-bottom: 2rem;
+  }
+}
