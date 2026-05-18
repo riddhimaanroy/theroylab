@@ -195,7 +195,7 @@ export default function Contact() {
           <div className={styles.topLeft}>
             <img
               ref={photoRef}
-              src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&q=80"
+              src="/hero-photo.png"
               alt="Portrait"
               className={styles.photo}
               style={{ opacity: 0 }}
