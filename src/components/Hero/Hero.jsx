@@ -1,188 +1,177 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './Hero.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PHOTO_URL =
-  'https://images.unsplash.com/photo-1600486913747-55e5470d6f40?w=800&q=80';
+const PHOTO_URL = '/hero-photo.png';
+const ILLUSTRATION_URL = '/hero-illustration.png';
 
 export default function Hero({ started }) {
   const sectionRef = useRef(null);
-  const photoWrapRef = useRef(null);
+  const portraitRef = useRef(null);
+  const photoRef = useRef(null);
+  const labelLeftRef = useRef(null);
+  const labelRightRef = useRef(null);
   const nameTrackRef = useRef(null);
-  const titleRef = useRef(null);
   const badgeRef = useRef(null);
   const entranceDone = useRef(false);
   const scrollCtx = useRef(null);
+  const rafId = useRef(null);
+  const mouseX = useRef(0.5);
+  const targetX = useRef(0.5);
 
-  // ——— Phase 1: Entrance animations ———
+  /* ---- Smooth split tracking ---- */
+  /* mouseX: 0 = cursor far left, 1 = cursor far right
+     Illustration = base layer (always visible underneath).
+     Photo = top layer, clipped from the LEFT.
+     - mouseX=0 → leftClip=100% → photo hidden → illustration shows
+     - mouseX=0.5 → leftClip=50% → 50/50 split
+     - mouseX=1 → leftClip=0% → photo fully visible */
+  const updateSplit = useCallback(() => {
+    mouseX.current += (targetX.current - mouseX.current) * 0.8;
+
+    const photo = photoRef.current;
+    const labelL = labelLeftRef.current;
+    const labelR = labelRightRef.current;
+
+    if (photo) {
+      const leftClip = (1 - mouseX.current) * 100;
+      photo.style.clipPath = `inset(0 0 0 ${leftClip}%)`;
+
+      // Labels: active side gets full opacity + slight scale, inactive fades
+      if (labelL) {
+        const leftStrength = Math.max(0, 1 - mouseX.current / 0.55);
+        labelL.style.opacity = 0.25 + leftStrength * 0.75;
+        labelL.style.transform = `translateY(-50%) scale(${1 + leftStrength * 0.03})`;
+      }
+      if (labelR) {
+        const rightStrength = Math.max(0, (mouseX.current - 0.45) / 0.55);
+        labelR.style.opacity = 0.25 + rightStrength * 0.75;
+        labelR.style.transform = `translateY(-50%) scale(${1 + rightStrength * 0.03})`;
+      }
+    }
+
+    rafId.current = requestAnimationFrame(updateSplit);
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const rect = section.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    targetX.current = Math.max(0.05, Math.min(0.95, x));
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    targetX.current = 0.5;
+  }, []);
+
+  useEffect(() => {
+    rafId.current = requestAnimationFrame(updateSplit);
+    return () => { if (rafId.current) cancelAnimationFrame(rafId.current); };
+  }, [updateSplit]);
+
+  /* ---- Entrance + scroll ---- */
   useEffect(() => {
     if (!started || entranceDone.current) return;
 
     const section = sectionRef.current;
-    const photoWrap = photoWrapRef.current;
+    const portrait = portraitRef.current;
     const nameTrack = nameTrackRef.current;
-    const title = titleRef.current;
     const badge = badgeRef.current;
 
-    if (!section || !photoWrap || !nameTrack || !title || !badge) return;
+    if (!section || !portrait || !nameTrack || !badge) return;
 
     const tl = gsap.timeline({
       onComplete: () => {
         entranceDone.current = true;
-        setupScrollAnimations();
+        setupScroll();
       },
     });
 
-    // Photo scales in
-    tl.fromTo(
-      photoWrap,
+    tl.fromTo(portrait,
       { scale: 0.95, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 1.4, ease: 'cubic-bezier(0.25, 1, 0.5, 1)' },
-      0
-    );
+      { scale: 1, opacity: 1, duration: 1.4, ease: 'cubic-bezier(0.25, 1, 0.5, 1)' }, 0);
 
-    // Name slides up from below
-    tl.fromTo(
-      nameTrack,
+    tl.fromTo(nameTrack,
       { yPercent: 80, opacity: 0 },
-      { yPercent: 0, opacity: 1, duration: 1.2, ease: 'cubic-bezier(0.76, 0, 0.24, 1)' },
-      0.15
-    );
+      { yPercent: 0, opacity: 1, duration: 1.2, ease: 'cubic-bezier(0.76, 0, 0.24, 1)' }, 0.15);
 
-    // Title fades up
-    tl.fromTo(
-      title,
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.9, ease: 'cubic-bezier(0.25, 1, 0.5, 1)' },
-      0.5
-    );
-
-    // Badge fades up
-    tl.fromTo(
-      badge,
+    tl.fromTo(badge,
       { y: 15, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, ease: 'cubic-bezier(0.25, 1, 0.5, 1)' },
-      0.65
-    );
+      { y: 0, opacity: 1, duration: 0.8, ease: 'cubic-bezier(0.25, 1, 0.5, 1)' }, 0.65);
 
-    // ——— Phase 2: Scroll parallax (individual triggers, no pinning) ———
-    // All elements lag behind natural scroll (positive y) at different rates.
-    // This creates layered depth where elements separate cleanly on exit:
-    //   Name exits first (no y lag, just drifts right) →
-    //   Badge & title exit next (small lag) →
-    //   Photo exits last (biggest lag, lingers longest)
-    function setupScrollAnimations() {
+    tl.fromTo(
+      [labelLeftRef.current, labelRightRef.current].filter(Boolean),
+      { opacity: 0, y: 15 },
+      { opacity: 0.6, y: 0, duration: 1, ease: 'power2.out' }, 0.8);
+
+    function setupScroll() {
       scrollCtx.current = gsap.context(() => {
-        // Photo: 0.5x scroll speed — lags most, last to leave viewport.
-        // No fade, no scale. Pure positional parallax.
-        gsap.fromTo(
-          photoWrap,
-          { y: 0 },
-          {
-            y: '45vh',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 0.4,
-            },
-          }
-        );
+        gsap.fromTo(portrait, { y: 0 },
+          { y: '45vh', ease: 'none',
+            scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 0.4 } });
 
-        // Name: drifts right on scroll, exits naturally (no y lag)
-        gsap.fromTo(
-          nameTrack,
-          { x: 0 },
-          {
-            x: 600,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 0.3,
-            },
-          }
-        );
+        gsap.fromTo(nameTrack, { x: 0 },
+          { x: 600, ease: 'none',
+            scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 0.3 } });
 
-        // Title: ~0.85x scroll speed — lags slightly behind natural scroll
-        gsap.fromTo(
-          title,
-          { y: 0 },
-          {
-            y: '15vh',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 0.5,
-            },
-          }
-        );
-
-        // Badge: ~0.9x scroll speed — barely lags, exits just after name
-        gsap.fromTo(
-          badge,
-          { y: 0 },
-          {
-            y: '10vh',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 0.6,
-            },
-          }
-        );
+        gsap.fromTo(badge, { y: 0 },
+          { y: '10vh', ease: 'none',
+            scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 0.6 } });
       }, section);
-
-      // Recalculate positions after all triggers are created
-      // to prevent layout-shift jumps
       ScrollTrigger.refresh();
     }
 
-    return () => {
-      tl.kill();
-      scrollCtx.current?.revert();
-    };
+    return () => { tl.kill(); scrollCtx.current?.revert(); };
   }, [started]);
 
-  useEffect(() => {
-    return () => scrollCtx.current?.revert();
-  }, []);
+  useEffect(() => () => scrollCtx.current?.revert(), []);
 
   return (
-    <section ref={sectionRef} className={styles.hero} data-section="hero">
-      {/* ---- Photo: flex anchor handles centering, GSAP owns .photoWrap transform ---- */}
-      <div className={styles.photoAnchor}>
-        <div ref={photoWrapRef} className={styles.photoWrap} style={{ opacity: 0 }}>
-          <div className={styles.photoMask}>
-            <img
-              src={PHOTO_URL}
-              alt="Riddhimaan Roy"
-              className={styles.photo}
-              loading="eager"
-            />
+    <section
+      ref={sectionRef}
+      className={styles.hero}
+      data-section="hero"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* ---- Split portrait ---- */}
+      <div className={styles.portraitAnchor}>
+        <div ref={portraitRef} className={styles.portraitWrap} style={{ opacity: 0 }}>
+          <div className={styles.portraitMask}>
+            <img src={ILLUSTRATION_URL} alt="Riddhimaan Roy illustrated"
+              className={styles.portraitImg} loading="eager" />
+            <img ref={photoRef} src={PHOTO_URL} alt="Riddhimaan Roy"
+              className={`${styles.portraitImg} ${styles.portraitPhoto}`}
+              style={{ clipPath: 'inset(0 0 0 50%)' }} loading="eager" />
           </div>
         </div>
       </div>
 
-      {/* ---- Title block: ↘ arrow + "I build / AI-powered products" ---- */}
-      <div ref={titleRef} className={styles.titleBlock} style={{ opacity: 0 }}>
-        <span className={styles.titleArrow}>&#x2198;</span>
-        <p className={styles.titleText}>
-          I build<br />
-          AI-powered products
-        </p>
+      {/* ---- Left label: creator ---- */}
+      <div ref={labelLeftRef} className={styles.labelLeft} style={{ opacity: 0 }}>
+        <span className={styles.labelMain}>creator</span>
+        <span className={styles.labelDesc}>
+          I design and build products from<br />
+          zero to live — websites, AI tools,<br />
+          and everything in between.
+        </span>
       </div>
 
-      {/* ---- Location badge — flush left edge, rounded right ---- */}
+      {/* ---- Right label: AI native + code snippets ---- */}
+      <div ref={labelRightRef} className={styles.labelRight} style={{ opacity: 0 }}>
+        <span className={styles.labelMain}>&lt;AI&nbsp;native&gt;</span>
+        <span className={styles.labelDesc}>
+          I don't just use AI, I understand it.<br />
+          Data scientist by trade,<br />
+          builder by obsession.
+        </span>
+      </div>
+
+      {/* ---- Location badge ---- */}
       <div ref={badgeRef} className={styles.badge} style={{ opacity: 0 }}>
         <div className={styles.badgeTextZone}>
           <span className={styles.badgeLine}>Located</span>
@@ -190,15 +179,8 @@ export default function Hero({ started }) {
         </div>
         <div className={styles.badgeGlobeZone}>
           <div className={styles.badgeGlobeInner}>
-            <svg
-              className={styles.badgeGlobeSvg}
-              width="30"
-              height="30"
-              viewBox="0 0 40 40"
-              fill="none"
-              stroke="#D4CBC2"
-              strokeWidth="1.1"
-            >
+            <svg className={styles.badgeGlobeSvg} width="30" height="30"
+              viewBox="0 0 40 40" fill="none" stroke="#D4CBC2" strokeWidth="1.1">
               <circle cx="20" cy="20" r="18" />
               <ellipse cx="20" cy="20" rx="7" ry="18" />
               <ellipse cx="20" cy="20" rx="13" ry="18" />
@@ -210,7 +192,7 @@ export default function Hero({ started }) {
         </div>
       </div>
 
-      {/* ---- Name at bottom — single instance, drifts right on scroll ---- */}
+      {/* ---- Name at bottom ---- */}
       <div className={styles.nameRow}>
         <h1 ref={nameTrackRef} className={styles.nameTrack} style={{ opacity: 0 }}>
           Riddhimaan Roy

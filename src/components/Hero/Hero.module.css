@@ -1,7 +1,8 @@
 /* ============================================
-   HERO V2 — W2 (dennissnellenberg.com) style
-   Warm muted background, photo center, single name at bottom.
-   Natural scroll with layered parallax — no pinning.
+   HERO — Split-face portrait (v4)
+   No divider line. Full-bleed portrait with soft radial fade.
+   Labels with descriptions + code snippets.
+   Near-instant mouse tracking.
    ============================================ */
 
 .hero {
@@ -10,81 +11,132 @@
   min-height: 700px;
   background: var(--bg-hero);
   overflow: hidden;
+  cursor: ew-resize;
 }
 
-/* ---- Photo ---- */
-/* Flex wrapper handles centering so GSAP can own transform
-   on .photoWrap without fighting a CSS translate. */
-.photoAnchor {
+/* ---- Portrait ---- */
+.portraitAnchor {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 10vh; /* nudge photo above dead-center */
-  pointer-events: none;
+  padding-bottom: 4vh;
   z-index: 3;
+  pointer-events: none;
 }
 
-.photoWrap {
+.portraitWrap {
   will-change: transform;
   pointer-events: auto;
 }
 
-.photoMask {
+/* Large radial mask — person fades seamlessly into the beige bg.
+   Bigger than before so no hard edges are visible anywhere. */
+.portraitMask {
   position: relative;
-  overflow: hidden;
+  width: clamp(420px, 48vw, 700px);
+  height: clamp(500px, 60vw, 850px);
+  overflow: visible;
   -webkit-mask-image: radial-gradient(
-    ellipse 85% 90% at 50% 45%,
-    #000 55%,
+    ellipse 85% 88% at 50% 40%,
+    #000 45%,
     transparent 100%
   );
   mask-image: radial-gradient(
-    ellipse 85% 90% at 50% 45%,
-    #000 55%,
+    ellipse 85% 88% at 50% 40%,
+    #000 45%,
     transparent 100%
   );
 }
 
-.photo {
-  width: clamp(300px, 30vw, 500px);
-  height: auto;
-  aspect-ratio: 3 / 4;
+.portraitImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center 15%;
   display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-/* ---- Title block: arrow + text as one cohesive unit ---- */
-.titleBlock {
+.portraitPhoto {
+  z-index: 2;
+  will-change: clip-path;
+}
+
+/* ---- Labels ---- */
+.labelLeft,
+.labelRight {
   position: absolute;
-  bottom: 36%;
-  left: calc(50% + clamp(200px, 18vw, 300px));
+  top: 40%;
+  transform: translateY(-50%);
   z-index: 6;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  will-change: transform, opacity;
+  gap: 0.6rem;
+  pointer-events: none;
+  will-change: opacity, transform;
+  transition: transform 0.1s ease;
 }
 
-.titleArrow {
-  font-size: 1.3rem;
-  line-height: 1;
+.labelLeft {
+  right: calc(50% + clamp(220px, 25vw, 380px));
+  text-align: right;
+  align-items: flex-end;
+}
+
+.labelRight {
+  left: calc(50% + clamp(220px, 25vw, 380px));
+  text-align: left;
+  align-items: flex-start;
+}
+
+.labelMain {
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-weight: 300;
+  letter-spacing: -0.025em;
   color: var(--text-dark);
-  opacity: 0.5;
+  line-height: 1.1;
+}
+
+.labelRight .labelMain {
+  font-family: 'Courier New', 'Courier', monospace;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.8vw, 2.8rem);
+}
+
+.labelDesc {
+  font-family: var(--font-sans);
+  font-size: clamp(0.72rem, 0.9vw, 0.88rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text-dark);
+  opacity: 0.55;
+}
+
+/* ---- Code snippets on right side ---- */
+.codeSnippets {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 0.8rem;
+}
+
+.codeSnippets span {
+  font-family: 'Courier New', 'Courier', monospace;
+  font-size: clamp(0.6rem, 0.72vw, 0.7rem);
+  line-height: 1.6;
+  color: var(--text-dark);
+  opacity: 0.18;
+  white-space: nowrap;
   display: block;
 }
 
-.titleText {
-  font-family: var(--font-sans);
-  font-size: clamp(1.1rem, 1.45vw, 1.35rem);
-  font-weight: 400;
-  line-height: 1.45;
-  color: var(--text-dark);
-  letter-spacing: 0.005em;
-}
-
-/* ---- Location badge — flush left, rounded right edge ---- */
+/* ---- Location badge ---- */
 .badge {
   position: absolute;
   bottom: 36%;
@@ -144,13 +196,13 @@
   100% { transform: rotateY(-30deg); }
 }
 
-/* ---- Name at bottom — single instance ---- */
+/* ---- Name at bottom ---- */
 .nameRow {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 5;
   overflow: visible;
   padding-bottom: clamp(0.3rem, 1.5vh, 1.5rem);
   pointer-events: none;
@@ -167,38 +219,30 @@
   will-change: transform, opacity;
   user-select: none;
   text-shadow: 0 0 60px rgba(0, 0, 0, 0.08), 0 0 20px rgba(0, 0, 0, 0.04);
-  /* Center the single name with slight left padding */
   padding-left: clamp(1rem, 3vw, 2.5rem);
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 1024px) {
-  .titleBlock {
-    right: clamp(1.5rem, 4vw, 3rem);
+@media (max-width: 1200px) {
+  .labelLeft,
+  .labelRight {
+    display: none;
   }
 }
 
 @media (max-width: 768px) {
-  .photo {
-    width: clamp(220px, 50vw, 340px);
+  .portraitMask {
+    width: clamp(300px, 70vw, 440px);
+    height: clamp(380px, 85vw, 530px);
   }
 
-  .photoAnchor {
-    padding-bottom: 12vh;
+  .portraitAnchor {
+    padding-bottom: 8vh;
   }
 
   .nameTrack {
     font-size: clamp(3.5rem, 12vw, 6rem);
     padding-left: 1rem;
-  }
-
-  .titleBlock {
-    right: 1.5rem;
-    bottom: 25%;
-  }
-
-  .titleText {
-    font-size: 0.8rem;
   }
 
   .badge {
@@ -227,13 +271,9 @@
     padding-left: 0.75rem;
   }
 
-  .photo {
-    width: 55vw;
-  }
-
-  .titleBlock {
-    right: 1rem;
-    bottom: 22%;
+  .portraitMask {
+    width: 75vw;
+    height: 90vw;
   }
 
   .badge {
