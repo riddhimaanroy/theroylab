@@ -105,7 +105,7 @@ const MagneticBubble = forwardRef(function MagneticBubble(
     <div ref={wrapRef} className={styles.bubbleWrap}>
       <a
         ref={circleRef}
-        href="https://linkedin.com/in/riddhimaan"
+        href="https://www.linkedin.com/in/riddhimaan-roy/"
         target="_blank"
         rel="noopener noreferrer"
         className={styles.bubble}

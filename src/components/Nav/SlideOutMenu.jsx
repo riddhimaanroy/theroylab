@@ -10,9 +10,7 @@ const MENU_ITEMS = [
 ];
 
 const SOCIALS = [
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/riddhimaan' },
-  { label: 'GitHub', href: 'https://github.com' },
-  { label: 'Twitter', href: 'https://twitter.com' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/riddhimaan-roy/' },
 ];
 
 export default function SlideOutMenu({ isOpen, onClose }) {

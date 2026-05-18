@@ -12,7 +12,7 @@ const IS_TOUCH =
   window.matchMedia('(pointer: coarse)').matches;
 
 const SOCIALS = [
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/riddhimaan' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/riddhimaan-roy/' },
   { label: 'GitHub', href: 'https://github.com/riddhimaan' },
   { label: 'Twitter', href: 'https://twitter.com/riddhimaan' },
 ];
