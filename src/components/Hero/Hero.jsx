@@ -21,6 +21,14 @@ export default function Hero({ started }) {
   const rafId = useRef(null);
   const mouseX = useRef(0.5);
   const targetX = useRef(0.5);
+  const isMobile = useRef(false);
+  const autoTime = useRef(0);
+
+  /* Detect touch device on mount */
+  useEffect(() => {
+    isMobile.current = window.matchMedia('(pointer: coarse)').matches
+      || 'ontouchstart' in window;
+  }, []);
 
   /* ---- Smooth split tracking ---- */
   /* mouseX: 0 = cursor far left, 1 = cursor far right
@@ -30,6 +38,12 @@ export default function Hero({ started }) {
      - mouseX=0.5 → leftClip=50% → 50/50 split
      - mouseX=1 → leftClip=0% → photo fully visible */
   const updateSplit = useCallback(() => {
+    // On mobile: auto-oscillate between 35% and 65%
+    if (isMobile.current) {
+      autoTime.current += 0.008;
+      targetX.current = 0.5 + Math.sin(autoTime.current) * 0.15;
+    }
+
     mouseX.current += (targetX.current - mouseX.current) * 0.8;
 
     const photo = photoRef.current;
@@ -57,11 +71,21 @@ export default function Hero({ started }) {
   }, []);
 
   const handleMouseMove = useCallback((e) => {
+    if (isMobile.current) return;
     const section = sectionRef.current;
     if (!section) return;
     const rect = section.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width;
     targetX.current = Math.max(0.05, Math.min(0.95, x));
+  }, []);
+
+  const handleTouchMove = useCallback((e) => {
+    const section = sectionRef.current;
+    if (!section || !e.touches[0]) return;
+    const rect = section.getBoundingClientRect();
+    const x = (e.touches[0].clientX - rect.left) / rect.width;
+    targetX.current = Math.max(0.05, Math.min(0.95, x));
+    isMobile.current = false; // stop auto-oscillation once user interacts
   }, []);
 
   const handleMouseLeave = useCallback(() => {
@@ -137,6 +161,7 @@ export default function Hero({ started }) {
       data-section="hero"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onTouchMove={handleTouchMove}
     >
       {/* ---- Split portrait ---- */}
       <div className={styles.portraitAnchor}>

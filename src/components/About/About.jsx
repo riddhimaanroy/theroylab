@@ -8,16 +8,15 @@ import styles from './About.module.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const HEADLINE_WORDS =
-  'Your data is telling you something. You\'re just not hearing it yet.'.split(' ');
+  '80% thinking. 20% building. That\'s why it works.'.split(' ');
+
 const BIO_1_WORDS =
-  '8 years of building models that actually move numbers — from NLP systems at Mastercard to production pipelines at Accenture. I\'ve helped companies see what was sitting in their data all along. Now I do the same for teams that need senior-level data science without the full-time overhead.'.split(
-    ' ',
-  );
+  '8 years in data science and machine learning — NLP systems at Mastercard, production pipelines at Accenture. I\'ve spent my career understanding how AI actually works, not just how to call an API.'.split(' ');
+
 const BIO_2_WORDS =
-  'I don\'t start with models — I start with your problem. What decision are you trying to make? What\'s costing you money? That\'s where the work begins.'.split(
-    ' ',
-  );
-const DANCE_WORDS = new Set(['8', 'Mastercard', '4', 'Accenture']);
+  'That same depth goes into everything I build. Websites, AI tools, WhatsApp bots, payment systems — I design every screen, write every API, and deploy it myself. No team. No handoffs. One person, full stack, live product.'.split(' ');
+
+const DANCE_WORDS = new Set(['80%', '20%', 'Mastercard', 'Accenture']);
 
 const WORD_ICONS = {
   Mastercard: (
@@ -33,13 +32,6 @@ const WORD_ICONS = {
     </svg>
   ),
 };
-
-const HOW_I_WORK = [
-  { num: '01', title: '48h first signal', desc: 'First insights delivered within 48 hours — no waiting for kickoff meetings.' },
-  { num: '02', title: 'Direct line', desc: 'Slack, WhatsApp, calls. No middlemen, no ticket queues.' },
-  { num: '03', title: 'Flex scope', desc: 'One-off analysis or end-to-end pipeline builds. You pick the depth.' },
-  { num: '04', title: 'No black boxes', desc: 'Async updates with full visibility. You always know what\'s happening.' },
-];
 
 function WordSpan({ words, dataAttr }) {
   return words.map((word, i) => {
@@ -65,8 +57,6 @@ export default function About() {
   const lineRef = useRef(null);
   const bio1Ref = useRef(null);
   const bio2Ref = useRef(null);
-  const howLabelRef = useRef(null);
-  const howLinesRef = useRef(null);
   const bubbleRef = useRef(null);
   const [bubbleGlow, setBubbleGlow] = useState(0);
 
@@ -82,10 +72,7 @@ export default function About() {
         labelRef.current,
         { y: 20, opacity: 0 },
         {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          ease: 'power2.out',
+          y: 0, opacity: 1, duration: 0.7, ease: 'power2.out',
           scrollTrigger: { trigger: section, start: 'top 80%' },
         },
       );
@@ -111,9 +98,7 @@ export default function About() {
         lineRef.current,
         { width: 0 },
         {
-          width: 60,
-          duration: 0.6,
-          ease: 'power3.inOut',
+          width: 60, duration: 0.6, ease: 'power3.inOut',
           scrollTrigger: { trigger: lineRef.current, start: 'top 75%' },
         },
       );
@@ -149,72 +134,6 @@ export default function About() {
           tl.to(el, { color: '#C8C8C8', duration: 0.15 }, i * 0.03);
         });
       }
-
-      // "How I work" label fade in
-      gsap.fromTo(
-        howLabelRef.current,
-        { y: 15, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: howLabelRef.current, start: 'top 85%' },
-        },
-      );
-
-      // "How I work" cards — clip-path reveal + number count-up
-      const howCards = howLinesRef.current?.querySelectorAll('[data-how-line]');
-      if (howCards?.length) {
-        // Cards reveal with clip-path wipe from left
-        howCards.forEach((card, i) => {
-          gsap.fromTo(
-            card,
-            { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-            {
-              clipPath: 'inset(0 0% 0 0)',
-              opacity: 1,
-              duration: 0.8,
-              ease: 'power3.inOut',
-              delay: 0.2 + i * 0.12,
-              scrollTrigger: { trigger: howLinesRef.current, start: 'top 85%' },
-            },
-          );
-
-          // Number count-up: animate from 00 to target
-          const numEl = card.querySelector('[data-how-num]');
-          if (numEl) {
-            const target = parseInt(numEl.getAttribute('data-target'), 10);
-            const obj = { val: 0 };
-            gsap.to(obj, {
-              val: target,
-              duration: 1.2,
-              delay: 0.4 + i * 0.12,
-              ease: 'power2.out',
-              scrollTrigger: { trigger: howLinesRef.current, start: 'top 85%' },
-              onUpdate: () => {
-                numEl.textContent = String(Math.round(obj.val)).padStart(2, '0');
-              },
-            });
-          }
-
-          // Top border color sweep
-          const border = card.querySelector('[data-how-border]');
-          if (border) {
-            gsap.fromTo(
-              border,
-              { scaleX: 0, transformOrigin: 'left' },
-              {
-                scaleX: 1,
-                duration: 0.6,
-                ease: 'power3.out',
-                delay: 0.5 + i * 0.12,
-                scrollTrigger: { trigger: howLinesRef.current, start: 'top 85%' },
-              },
-            );
-          }
-        });
-      }
     }, section);
 
     return () => ctx.revert();
@@ -222,12 +141,9 @@ export default function About() {
 
   return (
     <section ref={sectionRef} className={styles.about} style={{ overflow: 'hidden' }}>
-      {/* Canvas constellation — z-index 0, behind all content */}
       <Constellation sectionRef={sectionRef} bubbleElRef={bubbleRef} onBubbleGlow={handleBubbleGlow} />
 
-      {/* Content container — flexbox: text left, bubble right */}
       <div className={styles.inner} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '100px' }}>
-        {/* Left column: all text content */}
         <div className={styles.leftContent} style={{ flex: 1 }}>
           <p ref={labelRef} className={styles.label} style={{ opacity: 0 }}>
             01 / About
@@ -247,37 +163,10 @@ export default function About() {
               <WordSpan words={BIO_2_WORDS} dataAttr="data-bw" />
             </p>
           </div>
-
         </div>
 
-        {/* Right side: LinkedIn magnetic bubble */}
         <div style={{ flexShrink: 0, width: '150px', marginTop: '60px', marginRight: '40px' }}>
           <MagneticBubble ref={bubbleRef} glowStrength={bubbleGlow} />
-        </div>
-      </div>
-
-      {/* How I work — full width below the flex layout */}
-      <div className={styles.howBlock} style={{ position: 'relative', zIndex: 1 }}>
-        <div className={styles.howBlockInner}>
-          <p ref={howLabelRef} className={styles.howLabel} style={{ opacity: 0 }}>
-            How I work
-          </p>
-          <div ref={howLinesRef} className={styles.howGrid}>
-            {HOW_I_WORK.map((item) => (
-              <div key={item.num} data-how-line className={styles.howCard} style={{ opacity: 0 }}>
-                <div data-how-border className={styles.howCardBorder} />
-                <div className={styles.howCardGlow} />
-                <span data-how-num data-target={item.num} className={styles.howNum}>00</span>
-                <div className={styles.howCardContent}>
-                  <div className={styles.howTitleRow}>
-                    <span className={styles.howPulse} />
-                    <span className={styles.howTitle}>{item.title}</span>
-                  </div>
-                  <span className={styles.howDesc}>{item.desc}</span>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
