@@ -173,12 +173,12 @@ export default function Hero({ started }) {
         </div>
       </div>
 
-      {/* ---- Title block: ↘ arrow + "Senior / Data Scientist" ---- */}
+      {/* ---- Title block: ↘ arrow + "I build / AI-powered products" ---- */}
       <div ref={titleRef} className={styles.titleBlock} style={{ opacity: 0 }}>
         <span className={styles.titleArrow}>&#x2198;</span>
         <p className={styles.titleText}>
-          Senior<br />
-          Data Scientist
+          I build<br />
+          AI-powered products
         </p>
       </div>
 
