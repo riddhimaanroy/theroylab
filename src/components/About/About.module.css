@@ -1,13 +1,11 @@
 /* ============================================
-   ABOUT SECTION — Clean version.
-   Headline + bio + LinkedIn bubble.
-   How I Work cards moved to separate section.
+   ABOUT SECTION — Clean version with proper responsive.
    ============================================ */
 
 .about {
   position: relative;
   background: #1C1D20;
-  padding: 20vh 4vw 15vh 4vw;
+  padding: 20vh 4vw 6vh 4vw;
   overflow: hidden;
 }
 
@@ -33,11 +31,25 @@
   margin: 0 auto;
 }
 
+.innerFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(30px, 4vw, 60px);
+}
+
 /* ---- Left column (text) ---- */
 .leftContent {
   flex: 1;
   min-width: 0;
   overflow-wrap: break-word;
+}
+
+/* ---- Bubble column (right) ---- */
+.bubbleColumn {
+  flex-shrink: 0;
+  width: 150px;
+  margin-top: 60px;
 }
 
 /* ---- 01 / ABOUT label ---- */
@@ -100,12 +112,12 @@
 
 /* ---- Body text ---- */
 .bio {
-  max-width: 100%;
+  max-width: 850px;
 }
 
 .bioPara {
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: clamp(0.92rem, 1.05vw, 1.05rem);
   font-weight: 300;
   line-height: 1.75;
   color: #444;
@@ -170,38 +182,71 @@
    Responsive
    ============================================ */
 @media (max-width: 900px) {
+  .innerFlex {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.5rem;
+  }
+
   .leftContent {
     width: 100%;
     max-width: none;
   }
 
-  .bubbleWrap {
-    position: relative;
-    right: auto;
-    top: auto;
-    transform: none;
-    margin-top: 3rem;
+  .bubbleColumn {
+    margin-top: 0;
+    width: auto;
+    align-self: flex-start;
+  }
+
+  .bio {
+    max-width: 100%;
   }
 }
 
 @media (max-width: 768px) {
+  .about {
+    padding: 14vh 5vw 4vh 5vw;
+  }
+
   .headline {
-    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    font-size: clamp(1.4rem, 5.5vw, 2rem);
+    max-width: 100%;
+    margin-top: 1.5rem;
   }
 
   .bioPara,
   .bioPara2 {
-    font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+    font-size: clamp(0.88rem, 3.8vw, 1rem);
+    line-height: 1.7;
+  }
+
+  .accentLine {
+    margin: 1.5rem 0;
+  }
+
+  .label {
+    font-size: 0.78rem;
   }
 }
 
 @media (max-width: 480px) {
   .about {
-    padding: 15vh 4vw 10vh 4vw;
+    padding: 12vh 5vw 4vh 5vw;
   }
 
   .headline {
-    font-size: clamp(1.3rem, 6vw, 1.8rem);
+    font-size: clamp(1.25rem, 6vw, 1.7rem);
+    margin-top: 1.2rem;
+  }
+
+  .bioPara,
+  .bioPara2 {
+    font-size: clamp(0.85rem, 4vw, 0.95rem);
+  }
+
+  .bioPara2 {
+    margin-top: 1.2rem;
   }
 
   .bubble {

@@ -83,9 +83,9 @@ export default function About() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: headlineRef.current,
-            start: 'top 95%',
-            end: 'top 40%',
-            scrub: 1,
+            start: 'top 90%',
+            end: 'top 30%',
+            scrub: 2.5,
           },
         });
         hw.forEach((el, i) => {
@@ -109,9 +109,9 @@ export default function About() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: bio1Ref.current,
-            start: 'top 98%',
-            end: 'top 30%',
-            scrub: 1,
+            start: 'top 95%',
+            end: 'top 20%',
+            scrub: 2.5,
           },
         });
         bw1.forEach((el, i) => {
@@ -125,9 +125,9 @@ export default function About() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: bio2Ref.current,
-            start: 'top 98%',
-            end: 'top 30%',
-            scrub: 1,
+            start: 'top 95%',
+            end: 'top 20%',
+            scrub: 2.5,
           },
         });
         bw2.forEach((el, i) => {
@@ -143,8 +143,8 @@ export default function About() {
     <section ref={sectionRef} className={styles.about} style={{ overflow: 'hidden' }}>
       <Constellation sectionRef={sectionRef} bubbleElRef={bubbleRef} onBubbleGlow={handleBubbleGlow} />
 
-      <div className={styles.inner} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '100px' }}>
-        <div className={styles.leftContent} style={{ flex: 1 }}>
+      <div className={`${styles.inner} ${styles.innerFlex}`}>
+        <div className={styles.leftContent}>
           <p ref={labelRef} className={styles.label} style={{ opacity: 0 }}>
             01 / About
           </p>
@@ -165,7 +165,7 @@ export default function About() {
           </div>
         </div>
 
-        <div style={{ flexShrink: 0, width: '150px', marginTop: '60px', marginRight: '40px' }}>
+        <div className={styles.bubbleColumn}>
           <MagneticBubble ref={bubbleRef} glowStrength={bubbleGlow} />
         </div>
       </div>

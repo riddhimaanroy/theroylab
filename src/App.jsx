@@ -6,6 +6,7 @@ import Nav from './components/Nav/Nav';
 import SlideOutMenu from './components/Nav/SlideOutMenu';
 import Hero from './components/Hero/Hero';
 import About from './components/About/About';
+import HowIWork from './components/HowIWork/HowIWork';
 import Projects from './components/Projects/Projects';
 import Contact from './components/Contact/Contact';
 import styles from './App.module.css';
@@ -43,6 +44,9 @@ export default function App() {
 
         {/* Section 2: About */}
         <About />
+
+        {/* Section 3: How I Work */}
+        <HowIWork />
 
         {/* Ombre bridge — dark (#1C1D20) to light beige (#E8E4DE) */}
         <div className={styles.darkToBeigeBridge} />
