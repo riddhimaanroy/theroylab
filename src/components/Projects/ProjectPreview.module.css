@@ -1,0 +1,312 @@
+/* ============================================
+   PROJECT PREVIEW ANIMATIONS
+   NutriPing: WhatsApp chat simulation
+   Reviz: Quiz flow
+   UMI: Image carousel with Ken Burns
+   ============================================ */
+
+/* ============================================
+   NUTRIPING — WhatsApp chat
+   ============================================ */
+.waContainer {
+  width: 100%;
+  height: 100%;
+  background: #ECE5DD;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.waHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #075E54;
+}
+
+.waAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #5DFFA2;
+  color: #0A0A0A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+}
+
+.waHeaderText {
+  display: flex;
+  flex-direction: column;
+}
+
+.waName {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.waStatus {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  color: rgba(255,255,255,0.7);
+}
+
+.waMessages {
+  flex: 1;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4cfc6' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.waMsg {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  line-height: 1.4;
+  padding: 5px 8px;
+  border-radius: 6px;
+  max-width: 80%;
+  opacity: 0;
+  animation: waMsgPop 7s ease-in-out infinite;
+}
+
+.waMsgUser {
+  background: #DCF8C6;
+  color: #1C1D20;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+.waMsgBot {
+  background: #fff;
+  color: #1C1D20;
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+}
+
+@keyframes waMsgPop {
+  0% { opacity: 0; transform: scale(0.85) translateY(5px); }
+  8% { opacity: 1; transform: scale(1) translateY(0); }
+  85% { opacity: 1; }
+  95% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* ============================================
+   REVIZ — Quiz flow
+   ============================================ */
+.revizContainer {
+  width: 100%;
+  height: 100%;
+  background: #1a1a2e;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 12px;
+}
+
+.revizHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.revizLogo {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: #553B6E;
+}
+
+.revizBadge {
+  font-family: 'Courier New', monospace;
+  font-size: 9px;
+  color: #888;
+  background: rgba(255,255,255,0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.revizQuestion {
+  margin-bottom: 8px;
+}
+
+.revizQ {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: #ddd;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.revizOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.revizOpt {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  color: #ccc;
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.3s ease;
+}
+
+.revizOptVisible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.revizOptSelected {
+  border-color: #553B6E;
+  background: rgba(85, 59, 110, 0.2);
+}
+
+.revizOptCorrect {
+  border-color: #5DFFA2;
+  background: rgba(93, 255, 162, 0.12);
+  color: #5DFFA2;
+}
+
+.revizOptWrong {
+  border-color: #ff5f5f;
+  background: rgba(255, 95, 95, 0.08);
+  color: #ff5f5f;
+  opacity: 0.5;
+}
+
+.revizOptLetter {
+  font-weight: 700;
+  font-size: 9px;
+  color: #888;
+  min-width: 12px;
+}
+
+.revizFeedback {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  color: #5DFFA2;
+  padding: 6px 8px;
+  background: rgba(93, 255, 162, 0.08);
+  border-radius: 5px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  animation: feedbackSlide 0.3s ease-out;
+}
+
+.revizFeedbackIcon {
+  font-size: 12px;
+}
+
+@keyframes feedbackSlide {
+  0% { opacity: 0; transform: translateY(5px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.revizProgress {
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.revizProgressFill {
+  height: 100%;
+  background: #553B6E;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* ============================================
+   UMI — Image carousel with Ken Burns
+   ============================================ */
+.umiContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.umiImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+  animation: kenBurns 10s ease-in-out infinite;
+}
+
+.umiImgActive {
+  opacity: 1;
+}
+
+@keyframes kenBurns {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.08) translate(-1%, -1%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+.umiOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(transparent 30%, rgba(0,0,0,0.6) 100%);
+  z-index: 2;
+}
+
+.umiGreeting {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: 0.05em;
+  animation: greetFade 2.5s ease-in-out;
+}
+
+@keyframes greetFade {
+  0% { opacity: 0; transform: translateY(8px); }
+  20% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+.umiName {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
