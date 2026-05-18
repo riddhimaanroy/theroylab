@@ -6,45 +6,48 @@ import styles from './CapabilityCards.module.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const TOP_ROW = [
-  { label: 'Python & R', card: 'agents' },
-  { label: 'NLP & Transformers', card: 'nlp' },
-  { label: 'Predictive Modeling', card: 'predictive' },
-  { label: 'Computer Vision', card: 'vision' },
-  { label: 'Real-time Systems', card: 'realtime' },
+  { label: 'Frontend & UI', card: 'frontend' },
+  { label: 'AI & LLMs', card: 'ai' },
+  { label: 'Backend & APIs', card: 'backend' },
+  { label: 'WhatsApp Integration', card: 'whatsapp' },
+  { label: 'Payments', card: 'payments' },
 ];
 
 const BOTTOM_ROW = [
-  { label: 'Dashboards & Viz', card: 'dashboards' },
-  { label: 'Deep Learning', card: 'recommend' },
-  { label: 'Cloud & MLOps', card: 'mlops' },
-  { label: 'SQL & Data Eng', card: 'strategy' },
-  { label: 'Rapid Prototyping', card: 'prototype' },
+  { label: 'Data Science & ML', card: 'datascience' },
+  { label: 'Databases', card: 'databases' },
+  { label: 'Cloud & Deploy', card: 'cloud' },
+  { label: 'NLP & Text', card: 'nlp' },
+  { label: 'Design & UX', card: 'design' },
 ];
 
 /* ---- Individual card animation components ---- */
 
-function AgentsCard() {
+function FrontendCard() {
   return (
     <div className={styles.cardAnim}>
-      <div className={styles.agentsFlow}>
-        {[0, 1, 2].map((i) => (
-          <div key={i} className={styles.agentsNode}>
-            <div className={styles.agentsDot} />
-            {i < 2 && <div className={styles.agentsLine} style={{ animationDelay: `${i * 0.6}s` }} />}
+      <div className={styles.frontendLayout}>
+        <div className={styles.frontendNav} />
+        <div className={styles.frontendBody}>
+          <div className={styles.frontendSidebar} />
+          <div className={styles.frontendContent}>
+            <div className={styles.frontendBlock} style={{ width: '80%', animationDelay: '0s' }} />
+            <div className={styles.frontendBlock} style={{ width: '60%', animationDelay: '0.3s' }} />
+            <div className={styles.frontendBlock} style={{ width: '90%', animationDelay: '0.6s' }} />
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
 }
 
-function NlpCard() {
-  const lines = ['analyzing...', 'tokenizing...', 'classifying...', 'extracting...', 'tagging...'];
+function AiCard() {
+  const lines = ['anthropic.messages', '.create(model=', '"claude-haiku"', '→ streaming...', '✓ response'];
   return (
     <div className={styles.cardAnim}>
-      <div className={styles.nlpLog}>
+      <div className={styles.aiLog}>
         {lines.map((line, i) => (
-          <span key={i} className={styles.nlpLine} style={{ animationDelay: `${i * 0.7}s` }}>
+          <span key={i} className={styles.aiLine} style={{ animationDelay: `${i * 0.7}s` }}>
             {line}
           </span>
         ))}
@@ -53,7 +56,57 @@ function NlpCard() {
   );
 }
 
-function PredictiveCard() {
+function BackendCard() {
+  const endpoints = ['POST /webhook', 'GET  /dashboard', 'PUT  /user', 'GET  /meal/:id'];
+  return (
+    <div className={styles.cardAnim}>
+      <div className={styles.backendLog}>
+        {endpoints.map((ep, i) => (
+          <div key={i} className={styles.backendLine} style={{ animationDelay: `${i * 0.5}s` }}>
+            <span className={styles.backendMethod}>{ep.split(' ')[0]}</span>
+            <span className={styles.backendPath}>{ep.split(' ').slice(1).join(' ')}</span>
+            <span className={styles.backendStatus}>200</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function WhatsappCard() {
+  return (
+    <div className={styles.cardAnim}>
+      <div className={styles.waChat}>
+        <div className={`${styles.waBubble} ${styles.waBubbleUser}`} style={{ animationDelay: '0s' }}>
+          Had paneer tikka
+        </div>
+        <div className={`${styles.waBubble} ${styles.waBubbleBot}`} style={{ animationDelay: '1.2s' }}>
+          Got it! Score: 8.2/10 🎯
+        </div>
+        <div className={`${styles.waBubble} ${styles.waBubbleBot}`} style={{ animationDelay: '2.4s' }}>
+          Great protein choice! 💪
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PaymentsCard() {
+  return (
+    <div className={styles.cardAnim}>
+      <div className={styles.payWrap}>
+        <span className={styles.payAmount} />
+        <span className={styles.payLabel}>₹ processing</span>
+        <div className={styles.payBar}>
+          <div className={styles.payBarFill} />
+        </div>
+        <span className={styles.payCheck}>✓</span>
+      </div>
+    </div>
+  );
+}
+
+function DatascienceCard() {
   return (
     <div className={styles.cardAnim}>
       <svg viewBox="0 0 260 140" className={styles.chartSvg}>
@@ -69,51 +122,54 @@ function PredictiveCard() {
   );
 }
 
-function VisionCard() {
+function DatabasesCard() {
+  const lines = ['SELECT * FROM meals', 'WHERE user_id = 42', 'ORDER BY created_at', '→ 3 rows'];
   return (
     <div className={styles.cardAnim}>
-      <div className={styles.visionGrid}>
-        {Array.from({ length: 48 }, (_, i) => (
-          <div
-            key={i}
-            className={styles.visionPixel}
-            style={{ animationDelay: `${(Math.random() * 4).toFixed(2)}s` }}
-          />
+      <div className={styles.dbLog}>
+        {lines.map((line, i) => (
+          <span key={i} className={styles.dbLine} style={{ animationDelay: `${i * 0.6}s` }}>
+            {line}
+          </span>
         ))}
       </div>
     </div>
   );
 }
 
-function RealtimeCard() {
+function CloudCard() {
+  const cmds = ['scp app.py → server', 'ssh lightsail', 'systemctl restart', '● active (running)'];
   return (
     <div className={styles.cardAnim}>
-      <div className={styles.realtimeWrap}>
-        <span className={styles.realtimeCounter} />
-        <span className={styles.realtimeLabel}>req/s</span>
-        <div className={styles.realtimeBar}>
-          <div className={styles.realtimeBarFill} />
-        </div>
+      <div className={styles.termLog}>
+        {cmds.map((cmd, i) => (
+          <span
+            key={i}
+            className={`${styles.termLine} ${i === 3 ? styles.termSuccess : ''}`}
+            style={{ animationDelay: `${i * 0.8}s` }}
+          >
+            {i < 3 ? '$ ' : ''}{cmd}
+          </span>
+        ))}
       </div>
     </div>
   );
 }
 
-function DashboardsCard() {
-  const bars = [
-    { label: 'Q1', width: '60%', delay: '0s' },
-    { label: 'Q2', width: '85%', delay: '0.3s' },
-    { label: 'Q3', width: '45%', delay: '0.6s' },
+function NlpCard() {
+  const words = [
+    { text: 'paneer', tag: 'FOOD', color: '#5DFFA2' },
+    { text: 'tikka', tag: 'FOOD', color: '#5DFFA2' },
+    { text: '200g', tag: 'QTY', color: '#F0B86A' },
+    { text: 'dinner', tag: 'MEAL', color: '#7B9EF0' },
   ];
   return (
     <div className={styles.cardAnim}>
-      <div className={styles.dashBars}>
-        {bars.map((b) => (
-          <div key={b.label} className={styles.dashRow}>
-            <span className={styles.dashLabel}>{b.label}</span>
-            <div className={styles.dashTrack}>
-              <div className={styles.dashFill} style={{ '--bar-w': b.width, animationDelay: b.delay }} />
-            </div>
+      <div className={styles.nerWrap}>
+        {words.map((w, i) => (
+          <div key={i} className={styles.nerWord} style={{ animationDelay: `${i * 0.5}s` }}>
+            <span className={styles.nerText}>{w.text}</span>
+            <span className={styles.nerTag} style={{ background: w.color }}>{w.tag}</span>
           </div>
         ))}
       </div>
@@ -121,77 +177,41 @@ function DashboardsCard() {
   );
 }
 
-function RecommendCard() {
+function DesignCard() {
   return (
     <div className={styles.cardAnim}>
-      <svg viewBox="0 0 260 140" className={styles.graphSvg}>
-        {/* Dots */}
-        <circle cx="50" cy="40" r="4" className={styles.graphDot} />
-        <circle cx="130" cy="30" r="4" className={styles.graphDot} style={{ animationDelay: '0.5s' }} />
-        <circle cx="90" cy="90" r="4" className={styles.graphDot} style={{ animationDelay: '1s' }} />
-        <circle cx="200" cy="60" r="4" className={styles.graphDot} style={{ animationDelay: '0.3s' }} />
-        <circle cx="170" cy="110" r="4" className={styles.graphDot} style={{ animationDelay: '0.8s' }} />
-        <circle cx="230" cy="100" r="4" className={styles.graphDot} style={{ animationDelay: '1.2s' }} />
-        {/* Lines */}
-        <line x1="50" y1="40" x2="130" y2="30" className={styles.graphLine} />
-        <line x1="50" y1="40" x2="90" y2="90" className={styles.graphLine} style={{ animationDelay: '0.8s' }} />
-        <line x1="130" y1="30" x2="200" y2="60" className={styles.graphLine} style={{ animationDelay: '1.2s' }} />
-        <line x1="200" y1="60" x2="170" y2="110" className={styles.graphLine} style={{ animationDelay: '1.6s' }} />
-        <line x1="170" y1="110" x2="230" y2="100" className={styles.graphLine} style={{ animationDelay: '2s' }} />
-        <line x1="90" y1="90" x2="170" y2="110" className={styles.graphLine} style={{ animationDelay: '2.4s' }} />
-      </svg>
-    </div>
-  );
-}
-
-function MlopsCard() {
-  return (
-    <div className={styles.cardAnim}>
-      <div className={styles.mlopsWrap}>
-        <svg viewBox="0 0 80 80" className={styles.mlopsSvg}>
-          <circle cx="40" cy="40" r="34" className={styles.mlopsTrack} />
-          <circle cx="40" cy="40" r="34" className={styles.mlopsRing} />
-        </svg>
-        <span className={styles.mlopsPercent} />
-      </div>
-    </div>
-  );
-}
-
-function StrategyCard() {
-  return (
-    <div className={styles.cardAnim}>
-      <div className={styles.strategyBars}>
-        <div className={styles.strategyBar} style={{ '--bar-w': '70%', animationDelay: '0s' }} />
-        <div className={`${styles.strategyBar} ${styles.strategyBarAlt}`} style={{ '--bar-w': '50%', animationDelay: '0.4s' }} />
-        <div className={styles.strategyBar} style={{ '--bar-w': '90%', animationDelay: '0.8s' }} />
-      </div>
-    </div>
-  );
-}
-
-function PrototypeCard() {
-  return (
-    <div className={styles.cardAnim}>
-      <div className={styles.protoWrap}>
-        <span className={styles.protoText} />
-        <span className={styles.protoCursor}>|</span>
+      <div className={styles.designWrap}>
+        <div className={styles.designWire}>
+          <div className={styles.designWireHeader} />
+          <div className={styles.designWireBody}>
+            <div className={styles.designWireBlock} />
+            <div className={styles.designWireBlock} />
+          </div>
+        </div>
+        <div className={styles.designArrow}>→</div>
+        <div className={styles.designPolished}>
+          <div className={styles.designPolishedHeader} />
+          <div className={styles.designPolishedBody}>
+            <div className={styles.designPolishedBlock} />
+            <div className={styles.designPolishedBlock} />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 const CARD_COMPONENTS = {
-  agents: AgentsCard,
+  frontend: FrontendCard,
+  ai: AiCard,
+  backend: BackendCard,
+  whatsapp: WhatsappCard,
+  payments: PaymentsCard,
+  datascience: DatascienceCard,
+  databases: DatabasesCard,
+  cloud: CloudCard,
   nlp: NlpCard,
-  predictive: PredictiveCard,
-  vision: VisionCard,
-  realtime: RealtimeCard,
-  dashboards: DashboardsCard,
-  recommend: RecommendCard,
-  mlops: MlopsCard,
-  strategy: StrategyCard,
-  prototype: PrototypeCard,
+  design: DesignCard,
 };
 
 function Card({ label, card }) {
@@ -215,53 +235,25 @@ export default function CapabilityCards() {
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      // Label fade in
       gsap.fromTo(
         labelRef.current,
         { y: 20, opacity: 0 },
         {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          ease: 'power2.out',
+          y: 0, opacity: 1, duration: 0.7, ease: 'power2.out',
           scrollTrigger: { trigger: labelRef.current, start: 'top 90%' },
         },
       );
 
-      // Top row drifts left
       if (topRowRef.current) {
-        gsap.fromTo(
-          topRowRef.current,
-          { x: 100 },
-          {
-            x: -400,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            },
-          },
-        );
+        gsap.fromTo(topRowRef.current, { x: 50 },
+          { x: -150, ease: 'none',
+            scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: true } });
       }
 
-      // Bottom row drifts right
       if (bottomRowRef.current) {
-        gsap.fromTo(
-          bottomRowRef.current,
-          { x: -400 },
-          {
-            x: 100,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            },
-          },
-        );
+        gsap.fromTo(bottomRowRef.current, { x: -150 },
+          { x: 50, ease: 'none',
+            scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: true } });
       }
     }, section);
 
@@ -271,10 +263,10 @@ export default function CapabilityCards() {
   return (
     <div ref={sectionRef} className={styles.capabilities}>
       <p ref={labelRef} className={styles.capLabel} style={{ opacity: 0 }}>
-        The Toolkit
+        04 / The Stack
       </p>
       <p className={styles.capSubheadline}>
-        The technologies, frameworks, and methods behind every project.
+        The technologies, frameworks, and tools behind every product.
       </p>
 
       <div className={styles.rowsWrap}>

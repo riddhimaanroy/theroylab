@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ProjectPreview from './ProjectPreview';
+import CapabilityCards from './CapabilityCards';
 import projectsData from '../../data/projects.json';
 import styles from './Projects.module.css';
 
@@ -112,6 +113,8 @@ export default function Projects() {
         </div>
 
         <div data-divider className={styles.divider} />
+
+        <CapabilityCards />
       </div>
 
       <ProjectPreview activeProject={activeProject} />
