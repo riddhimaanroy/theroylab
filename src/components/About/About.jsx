@@ -140,7 +140,7 @@ export default function About() {
   }, []);
 
   return (
-    <section ref={sectionRef} className={styles.about} style={{ overflow: 'hidden' }}>
+    <section ref={sectionRef} id="about" className={styles.about} style={{ overflow: 'hidden' }}>
       <Constellation sectionRef={sectionRef} bubbleElRef={bubbleRef} onBubbleGlow={handleBubbleGlow} />
 
       <div className={`${styles.inner} ${styles.innerFlex}`}>

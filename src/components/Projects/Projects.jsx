@@ -80,7 +80,7 @@ export default function Projects() {
   }, []);
 
   return (
-    <section ref={sectionRef} className={styles.projects}>
+    <section ref={sectionRef} id="work" className={styles.projects}>
       <div className={styles.inner}>
         <p ref={labelRef} className={styles.label} style={{ opacity: 0 }}>
           03 / Work

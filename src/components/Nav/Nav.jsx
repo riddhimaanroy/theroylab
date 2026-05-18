@@ -122,7 +122,17 @@ export default function Nav({ visible, menuOpen, onMenuToggle }) {
       <nav className={styles.nav}>
         <div ref={linksRef} className={styles.linkGroup}>
           {LINKS.map((link) => (
-            <a key={link.label} href={link.href} className={styles.link} data-cursor-hover>
+            <a
+              key={link.label}
+              href={link.href}
+              className={styles.link}
+              data-cursor-hover
+              onClick={(e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.href);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               <span className={styles.linkText}>{link.label}</span>
             </a>
           ))}
